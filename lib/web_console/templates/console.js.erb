@@ -344,7 +344,7 @@ REPLConsole.prototype.install = function(container) {
     ev.stopPropagation();
   
     // Get the clipboard data
-    let paste = (ev.clipboardData || window.clipboardData).getData('text');
+    var paste = (ev.clipboardData || window.clipboardData).getData('text');
     _this.addToInput(paste);
   });
 
