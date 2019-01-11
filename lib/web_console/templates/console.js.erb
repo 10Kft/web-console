@@ -420,7 +420,7 @@ REPLConsole.prototype.install = function(container) {
 
   var focusHiddenArea = function() {
     // In order to ensure that the browser will fire clipboard events, we always need to have something selected
-    _this.clipboard.val(' ');
+    _this.clipboard.value = ' ';
     _this.clipboard.focus().select();
   };
 
