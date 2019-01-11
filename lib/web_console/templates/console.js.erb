@@ -346,9 +346,7 @@ REPLConsole.prototype.install = function(container) {
   
     // Get the clipboard data
     let paste = (e.clipboardData || window.clipboardData).getData('text');
-    console.log('pasted =>', paste);
-    // Do something with paste like remove non-UTF-8 characters
-    paste = paste.replace(/[^\x20-\xFF]/gi, '');
+    console.log(paste);
     
     _this.addToInput(paste);
   });
