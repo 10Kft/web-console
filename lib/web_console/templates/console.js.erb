@@ -338,6 +338,21 @@ REPLConsole.prototype.uninstall = function() {
 REPLConsole.prototype.install = function(container) {
   var _this = this;
 
+  document.addEventListener('paste', (e) => {
+    console.log('in paste event', e);
+    // Prevent the default pasting event and stop bubbling
+    e.preventDefault();
+    e.stopPropagation();
+  
+    // Get the clipboard data
+    let paste = (e.clipboardData || window.clipboardData).getData('text');
+    console.log('pasted =>', paste);
+    // Do something with paste like remove non-UTF-8 characters
+    paste = paste.replace(/[^\x20-\xFF]/gi, '');
+    
+    _this.addToInput(paste);
+  });
+
   document.onkeydown = function(ev) {
     if (_this.focused) { _this.onKeyDown(ev); }
   };
@@ -552,7 +567,7 @@ REPLConsole.prototype.addToInput = function(val, caretPos) {
   caretPos = caretPos || this._caretPos;
   var before = this._input.substring(0, caretPos);
   var after = this._input.substring(caretPos, this._input.length);
-  console.log("addToInput:", before, after);
+  console.log("addToInput:", val);
   var newInput =  before + val + after;
   this.setInput(newInput, caretPos + val.length);
 };
@@ -746,23 +761,23 @@ REPLConsole.prototype.onKeyDown = function(ev) {
   }
 
   if (ev.ctrlKey || ev.metaKey) {
-    if (ev.keyCode == 86) {
-      // Set focus to our clipboard when they hit the "v" key
-      this.clipboard.focus();
+    // if (ev.keyCode == 86) {
+    //   // Set focus to our clipboard when they hit the "v" key
+    //   this.clipboard.focus();
 
-      // Pasting to clipboard doesn't happen immediately,
-      // so we have to wait for a while to get the pasted text.
-      var _this = this;
-      setTimeout(function() {
-        console.log(_this.clipboard.value);
-        _this.addToInput(_this.clipboard.value);
-        _this.clipboard.value = "";
-        _this.clipboard.blur();
-      }, 10);
-    }
+    //   // Pasting to clipboard doesn't happen immediately,
+    //   // so we have to wait for a while to get the pasted text.
+    //   var _this = this;
+    //   setTimeout(function() {
+    //     console.log(_this.clipboard.value);
+    //     _this.addToInput(_this.clipboard.value);
+    //     _this.clipboard.value = "";
+    //     _this.clipboard.blur();
+    //   }, 10);
+    // }
   }
-
-  ev.stopPropagation();
+  else
+    ev.stopPropagation();
 };
 
 /**
