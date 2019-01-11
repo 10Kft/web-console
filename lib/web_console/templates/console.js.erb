@@ -338,16 +338,13 @@ REPLConsole.prototype.uninstall = function() {
 REPLConsole.prototype.install = function(container) {
   var _this = this;
 
-  document.addEventListener('paste', (e) => {
-    console.log('in paste event', e);
+  document.addEventListener('paste', function(ev) {
     // Prevent the default pasting event and stop bubbling
-    e.preventDefault();
-    e.stopPropagation();
+    ev.preventDefault();
+    ev.stopPropagation();
   
     // Get the clipboard data
-    let paste = (e.clipboardData || window.clipboardData).getData('text');
-    console.log(paste);
-    
+    let paste = (ev.clipboardData || window.clipboardData).getData('text');
     _this.addToInput(paste);
   });
 
@@ -428,7 +425,6 @@ REPLConsole.prototype.install = function(container) {
   this.container = container;
   this.outer = consoleOuter;
   this.inner = findChild(this.outer, 'console-inner');
-  this.clipboard = document.querySelector('.clipboard');
 
   this.suggestWait = 1500;
   this.newPromptBox();
@@ -565,7 +561,6 @@ REPLConsole.prototype.addToInput = function(val, caretPos) {
   caretPos = caretPos || this._caretPos;
   var before = this._input.substring(0, caretPos);
   var after = this._input.substring(caretPos, this._input.length);
-  console.log("addToInput:", val);
   var newInput =  before + val + after;
   this.setInput(newInput, caretPos + val.length);
 };
@@ -755,27 +750,10 @@ REPLConsole.prototype.onKeyDown = function(ev) {
       break;
 
     default:
-      break;
+      return;
   }
 
-  if (ev.ctrlKey || ev.metaKey) {
-    // if (ev.keyCode == 86) {
-    //   // Set focus to our clipboard when they hit the "v" key
-    //   this.clipboard.focus();
-
-    //   // Pasting to clipboard doesn't happen immediately,
-    //   // so we have to wait for a while to get the pasted text.
-    //   var _this = this;
-    //   setTimeout(function() {
-    //     console.log(_this.clipboard.value);
-    //     _this.addToInput(_this.clipboard.value);
-    //     _this.clipboard.value = "";
-    //     _this.clipboard.blur();
-    //   }, 10);
-    // }
-  }
-  else
-    ev.stopPropagation();
+  ev.stopPropagation();
 };
 
 /**
