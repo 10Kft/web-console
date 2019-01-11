@@ -749,7 +749,6 @@ REPLConsole.prototype.onKeyDown = function(ev) {
   if (ev.ctrlKey || ev.metaKey) {
     if (ev.keyCode == 86) {
       // Set focus to our clipboard when they hit the "v" key
-      this.clipboard.value = "";
       this.clipboard.focus();
 
       // Pasting to clipboard doesn't happen immediately,
@@ -760,7 +759,7 @@ REPLConsole.prototype.onKeyDown = function(ev) {
         _this.addToInput(_this.clipboard.value);
         _this.clipboard.value = "";
         _this.clipboard.blur();
-      }, 10);
+      }, 1);
     }
   }
 
