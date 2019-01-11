@@ -415,8 +415,7 @@ REPLConsole.prototype.install = function(container) {
   this.container = container;
   this.outer = consoleOuter;
   this.inner = findChild(this.outer, 'console-inner');
-  this.clipboard = findChild(container, 'clipboard');
-  var _this = this;
+  this.clipboard = document.querySelector('.clipboard');
 
   this.suggestWait = 1500;
   this.newPromptBox();
@@ -749,7 +748,6 @@ REPLConsole.prototype.onKeyDown = function(ev) {
   if (ev.ctrlKey || ev.metaKey) {
     if (ev.keyCode == 86) {
       // Set focus to our clipboard when they hit the "v" key
-      this.clipboard.value = "";
       this.clipboard.focus();
 
       // Pasting to clipboard doesn't happen immediately,
@@ -760,7 +758,7 @@ REPLConsole.prototype.onKeyDown = function(ev) {
         _this.addToInput(_this.clipboard.value);
         _this.clipboard.value = "";
         _this.clipboard.blur();
-      }, 1);
+      }, 10);
     }
   }
 
