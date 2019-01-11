@@ -338,6 +338,16 @@ REPLConsole.prototype.uninstall = function() {
 REPLConsole.prototype.install = function(container) {
   var _this = this;
 
+  document.addEventListener('paste', function(ev) {
+    // Prevent the default pasting event and stop bubbling
+    ev.preventDefault();
+    ev.stopPropagation();
+  
+    // Get the clipboard data
+    var paste = (ev.clipboardData || window.clipboardData).getData('text');
+    _this.addToInput(paste);
+  });
+
   document.onkeydown = function(ev) {
     if (_this.focused) { _this.onKeyDown(ev); }
   };
@@ -415,7 +425,7 @@ REPLConsole.prototype.install = function(container) {
   this.container = container;
   this.outer = consoleOuter;
   this.inner = findChild(this.outer, 'console-inner');
-  this.clipboard = findChild(container, 'clipboard');
+
   this.suggestWait = 1500;
   this.newPromptBox();
   this.insertCss();
@@ -740,23 +750,7 @@ REPLConsole.prototype.onKeyDown = function(ev) {
       break;
 
     default:
-      break;
-  }
-
-  if (ev.ctrlKey || ev.metaKey) {
-    if (ev.keyCode == 86) {
-      // Set focus to our clipboard when they hit the "v" key
-      this.clipboard.focus();
-
-      // Pasting to clipboard doesn't happen immediately,
-      // so we have to wait for a while to get the pasted text.
-      var _this = this;
-      setTimeout(function() {
-        _this.addToInput(_this.clipboard.value);
-        _this.clipboard.value = "";
-        _this.clipboard.blur();
-      }, 10);
-    }
+      return;
   }
 
   ev.stopPropagation();
