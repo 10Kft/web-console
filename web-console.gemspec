@@ -6,7 +6,7 @@ require "web_console/version"
 
 Gem::Specification.new do |s|
   s.name     = "web-console"
-  s.version  = "3.8.1"
+  s.version  = "3.8.2"
   s.authors  = ["Charlie Somerville", "Genadi Samokovarov", "Guillermo Iguaran", "Ryan Dao"]
   s.email    = ["charlie@charliesomerville.com", "gsamokovarov@gmail.com", "guilleiguaran@gmail.com", "daoduyducduong@gmail.com"]
   s.homepage = "https://github.com/rails/web-console"
